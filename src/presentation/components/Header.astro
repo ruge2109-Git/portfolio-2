@@ -1,0 +1,274 @@
+---
+/**
+ * Presentation Component: Header
+ * Global navigation header with language toggle and theme switcher
+ */
+import type { Language } from '@domain/types/Language';
+import { translations } from '@shared/di/container';
+import { configService } from '@shared/di/container';
+
+interface Props {
+  lang?: Language;
+}
+
+const { lang = 'es' } = Astro.props;
+const t = translations.getTranslations(lang);
+const config = await configService.getConfig();
+---
+
+<header class="fixed top-0 left-0 right-0 z-50 bg-gray-50/95 dark:bg-gray-950/95 backdrop-blur-2xl border-b-2 border-gray-200/50 dark:border-gray-800/50 shadow-lg shadow-gray-900/5 dark:shadow-gray-100/5 transition-all duration-500">
+  <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-5">
+    <div class="flex items-center justify-between">
+      <a 
+        href="/" 
+        class="relative text-xl sm:text-2xl font-bold font-display text-gray-900 dark:text-gray-50 hover:text-gray-700 dark:hover:text-gray-300 transition-all duration-300 group"
+      >
+        <span class="relative z-10">{config.personal.name.split(' ')[0]}</span>
+        <span class="absolute bottom-0 left-0 w-full h-1 bg-gray-300 dark:bg-gray-700 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></span>
+      </a>
+      
+      <ul class="hidden md:flex items-center gap-1 sm:gap-2">
+        <li>
+          <a 
+            href="#about" 
+            class="relative px-3 sm:px-4 py-2 text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100 font-medium transition-all duration-300 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800/50 group text-sm sm:text-base"
+          >
+            {t.nav.about}
+            <span class="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-0 h-0.5 bg-gray-900 dark:bg-gray-100 group-hover:w-3/4 transition-all duration-300"></span>
+          </a>
+        </li>
+        <li>
+          <a 
+            href="#projects" 
+            class="relative px-3 sm:px-4 py-2 text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100 font-medium transition-all duration-300 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800/50 group text-sm sm:text-base"
+          >
+            {t.nav.projects}
+            <span class="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-0 h-0.5 bg-gray-900 dark:bg-gray-100 group-hover:w-3/4 transition-all duration-300"></span>
+          </a>
+        </li>
+        <li>
+          <a 
+            href="#skills" 
+            class="relative px-3 sm:px-4 py-2 text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100 font-medium transition-all duration-300 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800/50 group text-sm sm:text-base"
+          >
+            {t.nav.skills}
+            <span class="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-0 h-0.5 bg-gray-900 dark:bg-gray-100 group-hover:w-3/4 transition-all duration-300"></span>
+          </a>
+        </li>
+        <li>
+          <a 
+            href="#experience" 
+            class="relative px-3 sm:px-4 py-2 text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100 font-medium transition-all duration-300 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800/50 group text-sm sm:text-base"
+          >
+            {t.nav.experience}
+            <span class="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-0 h-0.5 bg-gray-900 dark:bg-gray-100 group-hover:w-3/4 transition-all duration-300"></span>
+          </a>
+        </li>
+        <li>
+          <a 
+            href="#contact" 
+            class="relative px-3 sm:px-4 py-2 text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100 font-medium transition-all duration-300 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800/50 group text-sm sm:text-base"
+          >
+            {t.nav.contact}
+            <span class="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-0 h-0.5 bg-gray-900 dark:bg-gray-100 group-hover:w-3/4 transition-all duration-300"></span>
+          </a>
+        </li>
+      </ul>
+
+      <div class="flex items-center gap-2 sm:gap-3">
+        <!-- Language Toggle -->
+        <div class="relative group">
+          <button
+            type="button"
+            id="lang-toggle"
+            class="relative flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3 py-2 sm:py-2.5 rounded-lg sm:rounded-xl bg-gray-200 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-700 transition-all duration-300 hover:scale-110 shadow-md hover:shadow-lg font-semibold text-xs sm:text-sm"
+            aria-label={t.nav.lang}
+            aria-expanded="false"
+          >
+            <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129" />
+            </svg>
+            <span id="current-lang" class="hidden sm:inline">{lang === 'es' ? t.nav.langEs : t.nav.langEn}</span>
+          </button>
+          
+          <!-- Language Dropdown -->
+          <div id="lang-dropdown" class="hidden absolute right-0 top-full mt-2 w-32 sm:w-36 bg-white dark:bg-gray-900 rounded-xl shadow-2xl border-2 border-gray-200 dark:border-gray-800 overflow-hidden z-[100] animate-fade-in-down">
+            <button
+              type="button"
+              data-lang="es"
+              class={`w-full px-4 py-3 text-left text-sm font-semibold transition-all duration-300 hover:bg-gray-100 dark:hover:bg-gray-800 flex items-center justify-between ${
+                lang === 'es' 
+                  ? 'bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100' 
+                  : 'text-gray-700 dark:text-gray-300'
+              }`}
+            >
+              <span>🇪🇸 {t.nav.langEs}</span>
+              {lang === 'es' && (
+                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                </svg>
+              )}
+            </button>
+            <button
+              type="button"
+              data-lang="en"
+              class={`w-full px-4 py-3 text-left text-sm font-semibold transition-all duration-300 hover:bg-gray-100 dark:hover:bg-gray-800 flex items-center justify-between ${
+                lang === 'en' 
+                  ? 'bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100' 
+                  : 'text-gray-700 dark:text-gray-300'
+              }`}
+            >
+              <span>🇬🇧 {t.nav.langEn}</span>
+              {lang === 'en' && (
+                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                </svg>
+              )}
+            </button>
+          </div>
+        </div>
+
+        <button
+          id="theme-toggle"
+          class="relative p-2 sm:p-2.5 rounded-lg sm:rounded-xl bg-gray-200 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-700 transition-all duration-300 hover:scale-110 hover:rotate-180 shadow-md hover:shadow-lg"
+          aria-label="Toggle theme"
+        >
+          <svg class="w-4 h-4 sm:w-5 sm:h-5 hidden dark:block transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+          </svg>
+          <svg class="w-4 h-4 sm:w-5 sm:h-5 dark:hidden transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+          </svg>
+        </button>
+
+        <button
+          id="mobile-menu-toggle"
+          class="md:hidden p-2 sm:p-2.5 rounded-lg sm:rounded-xl bg-gray-200 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-700 transition-all duration-300 hover:scale-110 shadow-md hover:shadow-lg"
+          aria-label="Toggle menu"
+        >
+          <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile menu -->
+    <div id="mobile-menu" class="hidden md:hidden mt-4 pb-4 animate-fade-in-down">
+      <ul class="flex flex-col gap-2">
+        <li>
+          <a href="#about" class="block px-4 py-3 text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-all duration-300 hover:translate-x-2 text-sm sm:text-base">
+            {t.nav.about}
+          </a>
+        </li>
+        <li>
+          <a href="#projects" class="block px-4 py-3 text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-all duration-300 hover:translate-x-2 text-sm sm:text-base">
+            {t.nav.projects}
+          </a>
+        </li>
+        <li>
+          <a href="#skills" class="block px-4 py-3 text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-all duration-300 hover:translate-x-2 text-sm sm:text-base">
+            {t.nav.skills}
+          </a>
+        </li>
+        <li>
+          <a href="#experience" class="block px-4 py-3 text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-all duration-300 hover:translate-x-2 text-sm sm:text-base">
+            {t.nav.experience}
+          </a>
+        </li>
+        <li>
+          <a href="#contact" class="block px-4 py-3 text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-all duration-300 hover:translate-x-2 text-sm sm:text-base">
+            {t.nav.contact}
+          </a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+</header>
+
+<script>
+  (function() {
+    // Theme toggle
+    const themeToggle = document.getElementById('theme-toggle');
+    const html = document.documentElement;
+    const currentTheme = localStorage.getItem('theme') || 'light';
+    if (currentTheme === 'dark') {
+      html.classList.add('dark');
+    }
+    themeToggle?.addEventListener('click', () => {
+      html.classList.toggle('dark');
+      const theme = html.classList.contains('dark') ? 'dark' : 'light';
+      localStorage.setItem('theme', theme);
+    });
+
+    // Language toggle
+    const langToggle = document.getElementById('lang-toggle');
+    const langDropdown = document.getElementById('lang-dropdown');
+    
+    if (!langToggle || !langDropdown) return;
+    
+    // Toggle dropdown visibility
+    langToggle.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      langDropdown.classList.toggle('hidden');
+      const isExpanded = langDropdown.classList.contains('hidden') ? 'false' : 'true';
+      langToggle.setAttribute('aria-expanded', isExpanded);
+    });
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', (e) => {
+      const target = e.target as Node;
+      if (!langToggle.contains(target) && !langDropdown.contains(target)) {
+        langDropdown.classList.add('hidden');
+        langToggle.setAttribute('aria-expanded', 'false');
+      }
+    });
+
+    // Handle language selection using event delegation on the dropdown
+    langDropdown.addEventListener('click', (e) => {
+      const target = e.target as HTMLElement;
+      const button = target.closest('[data-lang]') as HTMLButtonElement;
+      
+      if (!button) return;
+      
+      e.preventDefault();
+      e.stopPropagation();
+      e.stopImmediatePropagation();
+      
+      const selectedLang = button.getAttribute('data-lang');
+      if (selectedLang && (selectedLang === 'es' || selectedLang === 'en')) {
+        // Close dropdown immediately
+        langDropdown.classList.add('hidden');
+        langToggle.setAttribute('aria-expanded', 'false');
+        
+        // Save preference and update URL
+        localStorage.setItem('preferred-language', selectedLang);
+        
+        // Build new URL preserving hash but updating lang parameter
+        const currentUrl = new URL(window.location.href);
+        const hash = currentUrl.hash;
+        currentUrl.searchParams.set('lang', selectedLang);
+        currentUrl.hash = hash;
+        
+        // Force full page reload
+        window.location.replace(currentUrl.toString());
+        
+        return false;
+      }
+    });
+
+    // Mobile menu toggle
+    const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+    const mobileMenu = document.getElementById('mobile-menu');
+    mobileMenuToggle?.addEventListener('click', () => {
+      mobileMenu?.classList.toggle('hidden');
+    });
+    const mobileLinks = mobileMenu?.querySelectorAll('a');
+    mobileLinks?.forEach(link => {
+      link.addEventListener('click', () => {
+        mobileMenu?.classList.add('hidden');
+      });
+    });
+  })();
+</script>

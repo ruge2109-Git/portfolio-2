@@ -1,0 +1,18 @@
+---
+/**
+ * Presentation Section: Contact
+ * Contact form section wrapper
+ */
+import type { Language } from '@domain/types/Language';
+import ContactForm from '@presentation/components/ContactForm';
+import { configService } from '@shared/di/container';
+
+interface Props {
+  lang?: Language;
+}
+
+const { lang = 'es' } = Astro.props;
+const config = await configService.getConfig();
+---
+
+<ContactForm client:load lang={lang} email={config.personal.email} />

@@ -1,0 +1,52 @@
+[
+  {
+    "title": "fit-tracker",
+    "description": "Plataforma web fullstack para seguimiento de fitness desarrollada con Next.js y Node.js. Implementa autenticación segura, dashboard interactivo con visualización de datos y despliegue optimizado en Vercel con code splitting y lazy loading para máximo rendimiento.",
+    "stack": ["Next.js", "Node.js", "TypeScript", "Vercel"],
+    "github": "https://github.com/ruge2109-Git/fit-tracker",
+    "demo": "https://fit-tracker-iota.vercel.app",
+    "lastUpdate": "2025-12-11T13:44:57Z",
+    "stars": 0,
+    "featured": true
+  },
+  {
+    "title": "fit-tracker-mobile",
+    "description": "Aplicación móvil multiplataforma desarrollada con Flutter siguiendo arquitectura BLoC. Implementa sincronización offline-first con resolución de conflictos, gestión completa de entrenamientos, seguimiento de progreso con métricas avanzadas, notificaciones push y exportación/importación de datos. Arquitectura escalable con 39 páginas implementadas y integración con Supabase y Firebase.",
+    "stack": ["Flutter", "Dart", "Supabase", "Firebase", "SQLite", "BLoC"],
+    "github": "https://github.com/ruge2109-Git/fit-tracker-mobile",
+    "demo": "",
+    "lastUpdate": "2024-12-15T10:00:00Z",
+    "stars": 0,
+    "featured": true
+  },
+  {
+    "title": "kpi",
+    "description": "Sistema empresarial de gestión y visualización de KPIs desarrollado como proyecto freelance. Arquitectura fullstack con Angular y Node.js que incluye dashboards interactivos con gráficos en tiempo real, reportes automatizados y análisis avanzado de métricas de negocio para toma de decisiones estratégicas.",
+    "stack": ["Angular", "Node.js", "TypeScript", "REST API"],
+    "github": "https://github.com/ruge2109-Git/kpi",
+    "demo": "",
+    "lastUpdate": "2022-04-27T04:37:15Z",
+    "stars": 0,
+    "featured": true
+  },
+  {
+    "title": "bodeguita-verde",
+    "description": "Plataforma e-commerce completa desarrollada con Angular 21 y arquitectura modular. Implementa catálogo dinámico de productos, carrito de compras persistente, proceso de checkout optimizado, área de usuario con historial de pedidos y panel de administración completo con gestión de inventario, clientes y proveedores. Diseño responsive con Tailwind CSS y gestión de estado reactiva con RxJS.",
+    "stack": ["Angular 21", "TypeScript", "Tailwind CSS", "RxJS"],
+    "github": "https://github.com/ruge2109-Git/bodeguita-verde",
+    "demo": "",
+    "lastUpdate": "2024-10-15T10:30:00Z",
+    "stars": 0,
+    "featured": true
+  },
+  {
+    "title": "marketplace",
+    "description": "Plataforma de marketplace enterprise con arquitectura de microservicios serverless implementada siguiendo Clean Architecture y Domain-Driven Design. Incluye servicios especializados para gestión de productos con variantes complejas, categorías jerárquicas, usuarios, notificaciones y órdenes. Integra funcionalidades de IA avanzadas: chat de ventas inteligente, virtual try-on y búsqueda semántica. Desplegado en AWS Lambda con DynamoDB, S3 y Serverless Framework para escalabilidad automática.",
+    "stack": ["Python", "FastAPI", "AWS Lambda", "DynamoDB", "S3", "Serverless", "OpenAI"],
+    "github": "https://github.com/marketplace-jr-jc/market-ui",
+    "demo": "",
+    "lastUpdate": "2024-11-20T15:00:00Z",
+    "stars": 0,
+    "featured": true
+  }
+]

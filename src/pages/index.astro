@@ -1,0 +1,70 @@
+---
+/**
+ * Presentation Page: Home
+ * Main portfolio page with all sections
+ */
+import BaseLayout from '@presentation/layouts/BaseLayout.astro';
+import Hero from '@presentation/sections/Hero.astro';
+import About from '@presentation/sections/About.astro';
+import FeaturedProjects from '@presentation/sections/FeaturedProjects.astro';
+import Skills from '@presentation/sections/Skills.astro';
+import Experience from '@presentation/sections/Experience.astro';
+import Contact from '@presentation/sections/Contact.astro';
+import { normalizeLanguage } from '@domain/types/Language';
+import { configService } from '@shared/di/container';
+import { DEFAULT_SITE_URL } from '@shared/constants';
+
+// Mark this page as dynamic to process query params
+export const prerender = false;
+
+// Get language from URL parameter
+const urlLangParam = Astro.url.searchParams.get('lang');
+const lang = normalizeLanguage(urlLangParam);
+
+// Get configuration using new architecture
+const config = await configService.getConfig();
+const siteUrl = import.meta.env.PUBLIC_SITE_URL || DEFAULT_SITE_URL;
+const title = `${config.personal.name} - ${config.personal.role}`;
+const description = lang === 'es' 
+  ? `Portafolio profesional de ${config.personal.name}. ${config.personal.role} especializado en desarrollo Fullstack, microservicios y AWS.`
+  : `Professional portfolio of ${config.personal.name}. ${config.personal.role} specialized in Fullstack development, microservices and AWS.`;
+---
+
+<BaseLayout title={title} description={description} lang={lang}>
+  <Hero lang={lang} />
+  <About lang={lang} />
+  <FeaturedProjects lang={lang} />
+  <Skills lang={lang} />
+  <Experience lang={lang} />
+  <Contact lang={lang} />
+</BaseLayout>
+
+<script is:inline>
+  // Sync language preference with URL parameter
+  (function() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const urlLang = urlParams.get('lang');
+    
+    // If URL has lang parameter, sync it with localStorage
+    if (urlLang === 'es' || urlLang === 'en') {
+      localStorage.setItem('preferred-language', urlLang);
+      document.documentElement.lang = urlLang;
+      return;
+    }
+    
+    // If no URL parameter, check localStorage and redirect if needed
+    const htmlLang = document.documentElement.lang || 'es';
+    const savedLang = localStorage.getItem('preferred-language');
+    if (savedLang && (savedLang === 'es' || savedLang === 'en') && savedLang !== htmlLang) {
+      const url = new URL(window.location.href);
+      url.searchParams.set('lang', savedLang);
+      window.location.replace(url.toString());
+      return;
+    }
+    
+    // Set default if nothing saved
+    if (!savedLang) {
+      localStorage.setItem('preferred-language', htmlLang);
+    }
+  })();
+</script>

@@ -1,0 +1,55 @@
+---
+/**
+ * Presentation Section: About
+ * About section with personal information
+ */
+import type { Language } from '@domain/types/Language';
+import { translations } from '@shared/di/container';
+import { configService } from '@shared/di/container';
+
+interface Props {
+  lang?: Language;
+}
+
+const { lang = 'es' } = Astro.props;
+const t = translations.getTranslations(lang);
+const config = await configService.getConfig();
+const aboutText = lang === 'es' ? config.about.es : config.about.en;
+---
+
+<section id="about" class="relative py-16 sm:py-20 lg:py-24 px-4 sm:px-6 lg:px-8 bg-white dark:bg-gray-950 overflow-hidden">
+  <!-- Background pattern -->
+  <div class="absolute inset-0 opacity-5 dark:opacity-10">
+    <div class="absolute inset-0" style="background-image: radial-gradient(circle, gray 1px, transparent 1px); background-size: 30px 30px;"></div>
+  </div>
+  
+  <!-- Background decoration -->
+  <div class="absolute top-0 right-0 w-[300px] h-[300px] sm:w-[500px] sm:h-[500px] bg-gray-200 dark:bg-gray-800 rounded-full mix-blend-multiply dark:mix-blend-screen filter blur-3xl opacity-20 animate-float"></div>
+  <div class="absolute bottom-0 left-0 w-[250px] h-[250px] sm:w-[400px] sm:h-[400px] bg-gray-300 dark:bg-gray-700 rounded-full mix-blend-multiply dark:mix-blend-screen filter blur-3xl opacity-20 animate-float" style="animation-delay: 2s;"></div>
+  
+  <div class="relative max-w-7xl mx-auto z-10">
+    <div class="max-w-4xl mx-auto text-center mb-12 sm:mb-16 animate-fade-in-down">
+      <div class="inline-block mb-3 sm:mb-4">
+        <span class="px-3 py-1.5 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm font-semibold bg-gray-200 dark:bg-gray-800 text-gray-700 dark:text-gray-300 border-2 border-gray-300 dark:border-gray-700 shadow-md">
+          {t.about.title}
+        </span>
+      </div>
+      <h2 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-black font-display text-gray-900 dark:text-gray-50 mb-4 sm:mb-6 tracking-tight px-2">
+        {t.about.title}
+      </h2>
+      <p class="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-600 dark:text-gray-400 font-medium px-4">
+        {t.about.subtitle}
+      </p>
+    </div>
+    
+    <div class="max-w-4xl mx-auto animate-fade-in-up">
+      <div class="relative bg-gradient-to-br from-gray-50 to-white dark:from-gray-900 dark:to-gray-950 rounded-2xl sm:rounded-3xl p-6 sm:p-8 md:p-10 lg:p-14 border-2 border-gray-200 dark:border-gray-800 shadow-2xl hover:shadow-3xl transition-all duration-500 overflow-hidden">
+        <!-- Decorative corner -->
+        <div class="absolute top-0 right-0 w-24 h-24 sm:w-32 sm:h-32 bg-gray-200 dark:bg-gray-800 opacity-20 rounded-bl-full"></div>
+        <p class="text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl text-gray-700 dark:text-gray-300 leading-relaxed whitespace-pre-line relative z-10 font-medium">
+          {aboutText}
+        </p>
+      </div>
+    </div>
+  </div>
+</section>

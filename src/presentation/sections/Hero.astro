@@ -1,0 +1,103 @@
+---
+/**
+ * Presentation Section: Hero
+ * Main hero section with introduction
+ */
+import type { Language } from '@domain/types/Language';
+import { translations } from '@shared/di/container';
+import { configService } from '@shared/di/container';
+
+interface Props {
+  lang?: Language;
+}
+
+const { lang = 'es' } = Astro.props;
+const t = translations.getTranslations(lang);
+const config = await configService.getConfig();
+---
+
+<section id="hero" class="relative min-h-screen flex items-center bg-gradient-to-br from-gray-50 via-gray-100 to-gray-200 dark:from-gray-950 dark:via-gray-900 dark:to-gray-800 overflow-hidden">
+  <!-- Background grid pattern -->
+  <div class="absolute inset-0 opacity-5 dark:opacity-10">
+    <div class="absolute inset-0" style="background-image: linear-gradient(to right, gray 1px, transparent 1px), linear-gradient(to bottom, gray 1px, transparent 1px); background-size: 50px 50px;"></div>
+  </div>
+
+  <!-- Background animated elements -->
+  <div class="absolute inset-0 overflow-hidden pointer-events-none">
+    <div class="absolute top-20 left-10 w-64 h-64 sm:w-96 sm:h-96 bg-gray-400 dark:bg-gray-700 rounded-full mix-blend-multiply dark:mix-blend-screen filter blur-3xl opacity-30 animate-float"></div>
+    <div class="absolute top-40 right-10 w-64 h-64 sm:w-96 sm:h-96 bg-gray-500 dark:bg-gray-600 rounded-full mix-blend-multiply dark:mix-blend-screen filter blur-3xl opacity-30 animate-float" style="animation-delay: 2s;"></div>
+    <div class="absolute -bottom-8 left-1/2 w-64 h-64 sm:w-96 sm:h-96 bg-gray-600 dark:bg-gray-500 rounded-full mix-blend-multiply dark:mix-blend-screen filter blur-3xl opacity-30 animate-float" style="animation-delay: 4s;"></div>
+  </div>
+
+  <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-20 w-full z-10">
+    <div class="max-w-5xl mx-auto text-center">
+      <div class="inline-block mb-4 sm:mb-6 animate-fade-in-down">
+        <span class="px-3 py-1.5 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm font-semibold bg-gray-200 dark:bg-gray-800 text-gray-700 dark:text-gray-300 border-2 border-gray-300 dark:border-gray-700 shadow-md">
+          {t.hero.greeting}
+        </span>
+      </div>
+      
+      <h1 class="text-4xl sm:text-6xl md:text-8xl lg:text-9xl font-black font-display mb-4 sm:mb-6 text-gray-900 dark:text-gray-50 leading-tight tracking-tight animate-fade-in-up px-2">
+        {config.personal.name}
+      </h1>
+      
+      <div class="relative inline-block mb-6 sm:mb-8 animate-fade-in-up" style="animation-delay: 0.1s;">
+        <h2 class="text-2xl sm:text-3xl md:text-5xl lg:text-6xl text-gray-700 dark:text-gray-300 font-bold relative z-10 px-2">
+          {t.hero.role}
+        </h2>
+        <div class="absolute bottom-1 sm:bottom-2 left-0 right-0 h-3 sm:h-4 bg-gray-300 dark:bg-gray-700 opacity-50 -z-10"></div>
+      </div>
+      
+      <p class="text-base sm:text-xl md:text-2xl lg:text-3xl text-gray-600 dark:text-gray-400 mb-8 sm:mb-12 max-w-3xl mx-auto leading-relaxed animate-fade-in-up px-4" style="animation-delay: 0.2s;">
+        {t.hero.description}
+      </p>
+      
+      <div class="flex flex-wrap items-center justify-center gap-2 sm:gap-3 mb-8 sm:mb-12 animate-fade-in-up px-4" style="animation-delay: 0.3s;">
+        {config.personal.mainStack.map((tech, index) => (
+          <span 
+            class="inline-flex items-center px-3 py-1.5 sm:px-5 sm:py-2.5 rounded-xl text-xs sm:text-sm font-semibold bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-200 border-2 border-gray-300 dark:border-gray-700 shadow-md hover:bg-gray-50 dark:hover:bg-gray-800 hover:scale-110 hover:shadow-xl hover:border-gray-400 dark:hover:border-gray-600 transition-all duration-300"
+            style={`animation-delay: ${0.4 + index * 0.1}s;`}
+          >
+            {tech}
+          </span>
+        ))}
+      </div>
+      
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 animate-fade-in-up px-4" style="animation-delay: 0.5s;">
+        <a
+          href={config.personal.github}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="group relative inline-flex items-center justify-center w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 rounded-xl sm:rounded-2xl font-bold text-sm sm:text-base bg-gray-900 dark:bg-gray-100 text-gray-50 dark:text-gray-900 hover:bg-gray-800 dark:hover:bg-gray-200 transition-all duration-300 hover:scale-105 shadow-xl hover:shadow-2xl hover:shadow-gray-900/50 dark:hover:shadow-gray-100/50 overflow-hidden"
+        >
+          <span class="absolute inset-0 bg-gradient-to-r from-gray-700 to-gray-900 dark:from-gray-200 dark:to-gray-100 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
+          <svg class="w-4 h-4 sm:w-5 sm:h-5 mr-2 relative z-10 group-hover:rotate-12 transition-transform duration-300" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+          </svg>
+          <span class="relative z-10">{t.hero.github}</span>
+        </a>
+        
+        <a
+          href={config.personal.cvUrl}
+          download
+          class="group inline-flex items-center justify-center w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 rounded-xl sm:rounded-2xl font-bold text-sm sm:text-base bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 border-3 border-gray-300 dark:border-gray-700 hover:border-gray-400 dark:hover:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800 transition-all duration-300 hover:scale-105 shadow-xl hover:shadow-2xl"
+        >
+          <svg class="w-4 h-4 sm:w-5 sm:h-5 mr-2 group-hover:translate-y-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+          </svg>
+          {t.hero.cv}
+        </a>
+        
+        <a
+          href="#projects"
+          class="group inline-flex items-center justify-center w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 rounded-xl sm:rounded-2xl font-bold text-sm sm:text-base text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-800 transition-all duration-300 hover:scale-105 shadow-md hover:shadow-xl"
+        >
+          {t.hero.viewProjects}
+          <svg class="w-4 h-4 sm:w-5 sm:h-5 ml-2 group-hover:translate-y-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+          </svg>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>

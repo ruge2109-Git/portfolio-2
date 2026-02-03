@@ -1,0 +1,54 @@
+---
+/**
+ * Presentation Layout: BaseLayout
+ * Base HTML structure for all pages
+ */
+import Header from '@presentation/components/Header.astro';
+import Footer from '@presentation/components/Footer.astro';
+import type { Language } from '@domain/types/Language';
+import '@shared/styles/global.css';
+import { DEFAULT_SITE_URL } from '@shared/constants';
+
+interface Props {
+  title: string;
+  description?: string;
+  lang?: Language;
+}
+
+const { title, description = 'Portafolio profesional de desarrollador web', lang = 'es' } = Astro.props;
+const siteUrl = import.meta.env.PUBLIC_SITE_URL || DEFAULT_SITE_URL;
+---
+
+<!doctype html>
+<html lang={lang} class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <meta name="generator" content={Astro.generator} />
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={siteUrl} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content={siteUrl} />
+    <meta property="twitter:title" content={title} />
+    <meta property="twitter:description" content={description} />
+    
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="canonical" href={siteUrl} />
+    
+    <title>{title}</title>
+  </head>
+  <body class="bg-gray-50 dark:bg-gray-950">
+    <Header lang={lang} />
+    <main class="pt-20">
+      <slot />
+    </main>
+    <Footer lang={lang} />
+  </body>
+</html>
