@@ -1,6 +1,3 @@
-/**
- * Domain Types: Filter and Sort Options
- */
 export type SortOption = 'date' | 'stars';
 
 export type FilterOption = string | 'all';

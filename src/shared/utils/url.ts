@@ -1,11 +1,4 @@
-/**
- * Shared Utilities: URL manipulation
- */
 import type { Language } from '../../domain/types/Language';
-
-/**
- * Build URL with language parameter
- */
 export function buildUrlWithLang(
   pathname: string,
   lang: Language,
@@ -18,10 +11,6 @@ export function buildUrlWithLang(
   }
   return url.pathname + url.search + url.hash;
 }
-
-/**
- * Get language from URL
- */
 export function getLangFromUrl(url: URL): Language | null {
   const langParam = url.searchParams.get('lang');
   if (!langParam) return null;

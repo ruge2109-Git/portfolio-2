@@ -1,7 +1,3 @@
-/**
- * Domain Types: Language
- * Supported languages in the application
- */
 export type Language = 'es' | 'en';
 
 export const SUPPORTED_LANGUAGES: readonly Language[] = ['es', 'en'] as const;

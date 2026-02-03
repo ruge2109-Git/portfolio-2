@@ -1,23 +1,11 @@
-/**
- * Shared: i18n Module
- * Translation utilities and exports
- */
-import { es } from './es';
-import { en } from './en';
 import type { Language } from '../../domain/types/Language';
+import type { Translations } from '../../domain/interfaces/TranslationService';
+import { portfolioData } from '@shared/data/portfolio';
 
-export type Translations = typeof es;
+export type { Translations } from '../../domain/interfaces/TranslationService';
 
-export const translations = {
-  es,
-  en,
-} as const;
-
-/**
- * Get translations for a specific language
- * @param lang - Language code ('es' | 'en')
- * @returns Translations object for the specified language
- */
+export const translations = portfolioData.translations;
 export function getTranslations(lang: Language): Translations {
-  return translations[lang] || translations.es;
+  const t = translations[lang] || translations.es;
+  return t as Translations;
 }

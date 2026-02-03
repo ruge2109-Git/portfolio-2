@@ -2,13 +2,13 @@ import { defineConfig } from 'astro/config';
 import react from '@astrojs/react';
 import tailwind from '@astrojs/tailwind';
 import sitemap from '@astrojs/sitemap';
+import vercel from '@astrojs/vercel';
 
-// https://astro.build/config
 export default defineConfig({
   integrations: [
     react(),
     tailwind({
-      applyBaseStyles: false, // Usamos nuestros propios estilos base
+      applyBaseStyles: false,
     }),
     sitemap({
       changefreq: 'weekly',
@@ -16,8 +16,9 @@ export default defineConfig({
       lastmod: new Date(),
     }),
   ],
-  site: 'https://tu-dominio.com', // Cambiar por tu dominio real
-  output: 'hybrid', // Hybrid allows static generation but can handle dynamic routes/query params
+  adapter: vercel(),
+  site: import.meta.env.PUBLIC_SITE_URL || 'http://localhost:4321',
+  output: 'static',
   build: {
     assets: 'assets',
   },

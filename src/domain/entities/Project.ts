@@ -1,7 +1,3 @@
-/**
- * Domain Entity: Project
- * Represents a portfolio project with all its properties
- */
 export interface Project {
   readonly title: string;
   readonly description: string;
@@ -12,10 +8,6 @@ export interface Project {
   readonly stars: number;
   readonly featured: boolean;
 }
-
-/**
- * Project domain methods
- */
 export class ProjectEntity {
   constructor(private readonly project: Project) {}
 

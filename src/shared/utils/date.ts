@@ -1,6 +1,3 @@
-/**
- * Shared Utilities: Date formatting
- */
 import type { Language } from '../../domain/types/Language';
 
 export function formatDate(dateString: string, lang: Language): string {

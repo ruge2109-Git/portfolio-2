@@ -1,12 +1,9 @@
-/**
- * Presentation Component: ContactForm
- * Contact form with validation
- */
 import { useState } from 'react';
 import type { FormEvent } from 'react';
 import type { Language } from '@domain/types/Language';
 import { getTranslations } from '@shared/i18n/index';
 import { CONTACT_EMAIL_SUBJECT_PREFIX } from '@shared/constants';
+import { useLanguage } from '@shared/hooks/useLanguage';
 
 interface Props {
   lang?: Language;
@@ -14,7 +11,8 @@ interface Props {
 }
 
 export default function ContactForm({ lang = 'es', email }: Props) {
-  const t = getTranslations(lang);
+  const { lang: currentLang } = useLanguage(lang);
+  const t = getTranslations(currentLang);
   
   const [formData, setFormData] = useState({
     name: '',
@@ -28,7 +26,7 @@ export default function ContactForm({ lang = 'es', email }: Props) {
     setStatus('sending');
 
     const subject = encodeURIComponent(
-      `${CONTACT_EMAIL_SUBJECT_PREFIX[lang]} - ${formData.name}`
+      `${CONTACT_EMAIL_SUBJECT_PREFIX[currentLang]} - ${formData.name}`
     );
     const body = encodeURIComponent(
       `Nombre: ${formData.name}\nEmail: ${formData.email}\n\nMensaje:\n${formData.message}`

@@ -1,7 +1,3 @@
-/**
- * Shared Constants
- * Application-wide constants
- */
 export const APP_NAME = 'Portfolio';
 export const APP_VERSION = '1.0.0';
 

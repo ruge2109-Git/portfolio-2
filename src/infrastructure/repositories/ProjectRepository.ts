@@ -1,14 +1,10 @@
-/**
- * Infrastructure: ProjectRepository Implementation
- * Concrete implementation of project data access
- */
 import type { IProjectRepository } from '../../domain/interfaces/ProjectRepository';
 import type { Project } from '../../domain/entities/Project';
 import type { ProjectFilters } from '../../domain/types/Filter';
-import projectsData from '../data/projects.json';
+import { portfolioData } from '@shared/data/portfolio';
 
 export class ProjectRepository implements IProjectRepository {
-  private projects: readonly Project[] = projectsData as readonly Project[];
+  private projects: readonly Project[] = portfolioData.projects;
 
   async findAll(): Promise<readonly Project[]> {
     return this.projects;
@@ -20,13 +16,9 @@ export class ProjectRepository implements IProjectRepository {
 
   async findByFilters(filters: ProjectFilters): Promise<readonly Project[]> {
     let filtered = [...this.projects];
-
-    // Filter by featured
     if (filters.featuredOnly) {
       filtered = filtered.filter((project) => project.featured);
     }
-
-    // Filter by technology
     if (filters.technology && filters.technology !== 'all') {
       filtered = filtered.filter((project) =>
         project.stack.some(
@@ -34,14 +26,11 @@ export class ProjectRepository implements IProjectRepository {
         )
       );
     }
-
-    // Sort
     if (filters.sortBy) {
       filtered.sort((a, b) => {
         if (filters.sortBy === 'stars') {
           return b.stars - a.stars;
         }
-        // Sort by date (most recent first)
         return (
           new Date(b.lastUpdate).getTime() - new Date(a.lastUpdate).getTime()
         );

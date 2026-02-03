@@ -1,8 +1,4 @@
 ---
-/**
- * Presentation Section: About
- * About section with personal information
- */
 import type { Language } from '@domain/types/Language';
 import { translations } from '@shared/di/container';
 import { configService } from '@shared/di/container';
@@ -18,12 +14,9 @@ const aboutText = lang === 'es' ? config.about.es : config.about.en;
 ---
 
 <section id="about" class="relative py-16 sm:py-20 lg:py-24 px-4 sm:px-6 lg:px-8 bg-white dark:bg-gray-950 overflow-hidden">
-  <!-- Background pattern -->
   <div class="absolute inset-0 opacity-5 dark:opacity-10">
     <div class="absolute inset-0" style="background-image: radial-gradient(circle, gray 1px, transparent 1px); background-size: 30px 30px;"></div>
   </div>
-  
-  <!-- Background decoration -->
   <div class="absolute top-0 right-0 w-[300px] h-[300px] sm:w-[500px] sm:h-[500px] bg-gray-200 dark:bg-gray-800 rounded-full mix-blend-multiply dark:mix-blend-screen filter blur-3xl opacity-20 animate-float"></div>
   <div class="absolute bottom-0 left-0 w-[250px] h-[250px] sm:w-[400px] sm:h-[400px] bg-gray-300 dark:bg-gray-700 rounded-full mix-blend-multiply dark:mix-blend-screen filter blur-3xl opacity-20 animate-float" style="animation-delay: 2s;"></div>
   
@@ -44,7 +37,6 @@ const aboutText = lang === 'es' ? config.about.es : config.about.en;
     
     <div class="max-w-4xl mx-auto animate-fade-in-up">
       <div class="relative bg-gradient-to-br from-gray-50 to-white dark:from-gray-900 dark:to-gray-950 rounded-2xl sm:rounded-3xl p-6 sm:p-8 md:p-10 lg:p-14 border-2 border-gray-200 dark:border-gray-800 shadow-2xl hover:shadow-3xl transition-all duration-500 overflow-hidden">
-        <!-- Decorative corner -->
         <div class="absolute top-0 right-0 w-24 h-24 sm:w-32 sm:h-32 bg-gray-200 dark:bg-gray-800 opacity-20 rounded-bl-full"></div>
         <p class="text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl text-gray-700 dark:text-gray-300 leading-relaxed whitespace-pre-line relative z-10 font-medium">
           {aboutText}

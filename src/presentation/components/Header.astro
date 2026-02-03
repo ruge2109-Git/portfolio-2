@@ -1,8 +1,4 @@
 ---
-/**
- * Presentation Component: Header
- * Global navigation header with language toggle and theme switcher
- */
 import type { Language } from '@domain/types/Language';
 import { translations } from '@shared/di/container';
 import { configService } from '@shared/di/container';
@@ -76,7 +72,6 @@ const config = await configService.getConfig();
       </ul>
 
       <div class="flex items-center gap-2 sm:gap-3">
-        <!-- Language Toggle -->
         <div class="relative group">
           <button
             type="button"
@@ -91,7 +86,6 @@ const config = await configService.getConfig();
             <span id="current-lang" class="hidden sm:inline">{lang === 'es' ? t.nav.langEs : t.nav.langEn}</span>
           </button>
           
-          <!-- Language Dropdown -->
           <div id="lang-dropdown" class="hidden absolute right-0 top-full mt-2 w-32 sm:w-36 bg-white dark:bg-gray-900 rounded-xl shadow-2xl border-2 border-gray-200 dark:border-gray-800 overflow-hidden z-[100] animate-fade-in-down">
             <button
               type="button"
@@ -153,7 +147,6 @@ const config = await configService.getConfig();
       </div>
     </div>
 
-    <!-- Mobile menu -->
     <div id="mobile-menu" class="hidden md:hidden mt-4 pb-4 animate-fade-in-down">
       <ul class="flex flex-col gap-2">
         <li>
@@ -188,7 +181,6 @@ const config = await configService.getConfig();
 
 <script>
   (function() {
-    // Theme toggle
     const themeToggle = document.getElementById('theme-toggle');
     const html = document.documentElement;
     const currentTheme = localStorage.getItem('theme') || 'light';
@@ -201,13 +193,11 @@ const config = await configService.getConfig();
       localStorage.setItem('theme', theme);
     });
 
-    // Language toggle
     const langToggle = document.getElementById('lang-toggle');
     const langDropdown = document.getElementById('lang-dropdown');
     
     if (!langToggle || !langDropdown) return;
     
-    // Toggle dropdown visibility
     langToggle.addEventListener('click', (e) => {
       e.preventDefault();
       e.stopPropagation();
@@ -215,8 +205,6 @@ const config = await configService.getConfig();
       const isExpanded = langDropdown.classList.contains('hidden') ? 'false' : 'true';
       langToggle.setAttribute('aria-expanded', isExpanded);
     });
-
-    // Close dropdown when clicking outside
     document.addEventListener('click', (e) => {
       const target = e.target as Node;
       if (!langToggle.contains(target) && !langDropdown.contains(target)) {
@@ -225,7 +213,6 @@ const config = await configService.getConfig();
       }
     });
 
-    // Handle language selection using event delegation on the dropdown
     langDropdown.addEventListener('click', (e) => {
       const target = e.target as HTMLElement;
       const button = target.closest('[data-lang]') as HTMLButtonElement;
@@ -238,27 +225,16 @@ const config = await configService.getConfig();
       
       const selectedLang = button.getAttribute('data-lang');
       if (selectedLang && (selectedLang === 'es' || selectedLang === 'en')) {
-        // Close dropdown immediately
         langDropdown.classList.add('hidden');
         langToggle.setAttribute('aria-expanded', 'false');
-        
-        // Save preference and update URL
-        localStorage.setItem('preferred-language', selectedLang);
-        
-        // Build new URL preserving hash but updating lang parameter
-        const currentUrl = new URL(window.location.href);
-        const hash = currentUrl.hash;
-        currentUrl.searchParams.set('lang', selectedLang);
-        currentUrl.hash = hash;
-        
-        // Force full page reload
-        window.location.replace(currentUrl.toString());
-        
+
+        import('@shared/stores/language').then(({ setLanguage }) =>
+          setLanguage(selectedLang as Language)
+        );
         return false;
       }
     });
 
-    // Mobile menu toggle
     const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
     const mobileMenu = document.getElementById('mobile-menu');
     mobileMenuToggle?.addEventListener('click', () => {

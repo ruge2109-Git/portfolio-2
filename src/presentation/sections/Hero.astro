@@ -1,8 +1,4 @@
 ---
-/**
- * Presentation Section: Hero
- * Main hero section with introduction
- */
 import type { Language } from '@domain/types/Language';
 import { translations } from '@shared/di/container';
 import { configService } from '@shared/di/container';
@@ -17,12 +13,9 @@ const config = await configService.getConfig();
 ---
 
 <section id="hero" class="relative min-h-screen flex items-center bg-gradient-to-br from-gray-50 via-gray-100 to-gray-200 dark:from-gray-950 dark:via-gray-900 dark:to-gray-800 overflow-hidden">
-  <!-- Background grid pattern -->
   <div class="absolute inset-0 opacity-5 dark:opacity-10">
     <div class="absolute inset-0" style="background-image: linear-gradient(to right, gray 1px, transparent 1px), linear-gradient(to bottom, gray 1px, transparent 1px); background-size: 50px 50px;"></div>
   </div>
-
-  <!-- Background animated elements -->
   <div class="absolute inset-0 overflow-hidden pointer-events-none">
     <div class="absolute top-20 left-10 w-64 h-64 sm:w-96 sm:h-96 bg-gray-400 dark:bg-gray-700 rounded-full mix-blend-multiply dark:mix-blend-screen filter blur-3xl opacity-30 animate-float"></div>
     <div class="absolute top-40 right-10 w-64 h-64 sm:w-96 sm:h-96 bg-gray-500 dark:bg-gray-600 rounded-full mix-blend-multiply dark:mix-blend-screen filter blur-3xl opacity-30 animate-float" style="animation-delay: 2s;"></div>

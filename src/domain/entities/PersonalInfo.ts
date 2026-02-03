@@ -1,7 +1,3 @@
-/**
- * Domain Entity: PersonalInfo
- * Represents personal information and configuration
- */
 export interface PersonalInfo {
   readonly name: string;
   readonly role: string;

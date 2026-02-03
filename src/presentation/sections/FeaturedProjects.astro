@@ -1,8 +1,4 @@
 ---
-/**
- * Presentation Section: FeaturedProjects
- * Displays featured projects
- */
 import type { Language } from '@domain/types/Language';
 import { translations } from '@shared/di/container';
 import { projectService } from '@shared/di/container';
@@ -18,7 +14,6 @@ const featuredProjects = await projectService.getFeaturedProjects();
 ---
 
 <section id="projects" class="relative py-16 sm:py-20 lg:py-24 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-gray-100 via-gray-50 to-white dark:from-gray-900 dark:via-gray-950 dark:to-gray-950 overflow-hidden">
-  <!-- Background pattern -->
   <div class="absolute inset-0 opacity-5 dark:opacity-10">
     <div class="absolute inset-0" style="background-image: linear-gradient(to right, gray 1px, transparent 1px), linear-gradient(to bottom, gray 1px, transparent 1px); background-size: 50px 50px;"></div>
   </div>

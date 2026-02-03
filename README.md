@@ -46,20 +46,22 @@ src/
 │
 ├── infrastructure/            # Capa de Infraestructura (Implementaciones)
 │   ├── repositories/          # Implementaciones de repositorios
-│   ├── services/              # Implementaciones de servicios
-│   └── data/                  # Fuentes de datos (JSON, configs)
+│   └── services/              # Implementaciones de servicios
 │
 ├── presentation/              # Capa de Presentación (UI)
 │   ├── components/            # Componentes reutilizables
-│   ├── sections/               # Secciones de la página
+│   ├── sections/              # Secciones de la página
 │   └── layouts/               # Layouts de página
 │
 ├── shared/                    # Capa Compartida
 │   ├── constants/             # Constantes de la aplicación
-│   ├── di/                     # Dependency Injection Container
-│   ├── i18n/                   # Traducciones
-│   ├── styles/                 # Estilos globales
-│   └── utils/                  # Utilidades compartidas
+│   ├── data/                  # Fuente única: config, proyectos y traducciones
+│   ├── di/                    # Dependency Injection Container
+│   ├── hooks/                 # Hooks React (useLanguage)
+│   ├── i18n/                  # API de traducciones (getTranslations)
+│   ├── stores/                # Store de idioma (cambio sin recarga)
+│   ├── styles/                # Estilos globales
+│   └── utils/                 # Utilidades compartidas
 │
 └── pages/                     # Páginas de Astro (routing automático)
 ```
@@ -100,28 +102,22 @@ pnpm install
 
 ### 3. Configurar variables de entorno
 
-Copia el archivo `.env.example` a `.env`:
+Crea un archivo `.env` en la raíz del proyecto:
 
 ```bash
-cp .env.example .env
+# .env (opcional durante desarrollo local)
+PUBLIC_SITE_URL=http://localhost:4321
 ```
 
-Edita `.env` con tu información:
-
-```env
-PUBLIC_SITE_URL=https://tu-dominio.com
-PUBLIC_EMAIL=tu-email@ejemplo.com
-PUBLIC_GITHUB=https://github.com/tu-usuario
-PUBLIC_LINKEDIN=https://linkedin.com/in/tu-perfil
-PUBLIC_TWITTER=https://twitter.com/tu-usuario
-PUBLIC_CV_URL=/CV.pdf
-```
+Para producción, usa la URL real de tu sitio (ej: `https://tu-dominio.com`).
 
 ## ⚙️ Configuración
 
+Toda la información del portafolio se centraliza en **un único archivo**: `src/shared/data/portfolio.ts`.
+
 ### 1. Personalizar información personal
 
-Edita `src/infrastructure/data/config.ts` con tu información:
+Edita el objeto `personal` en `portfolio.ts`:
 
 ```typescript
 personal: {
@@ -137,7 +133,7 @@ personal: {
 
 ### 2. Actualizar sección "About"
 
-En el mismo archivo `config.ts`, edita las secciones `about.es` y `about.en`:
+Edita las secciones `about.es` y `about.en` en `portfolio.ts`:
 
 ```typescript
 about: {
@@ -148,7 +144,7 @@ about: {
 
 ### 3. Configurar habilidades (Skills)
 
-Actualiza las habilidades en `config.ts`:
+Actualiza el objeto `skills` en `portfolio.ts`:
 
 ```typescript
 skills: {
@@ -160,7 +156,7 @@ skills: {
 
 ### 4. Agregar experiencia profesional
 
-Edita el array `experience` en `config.ts`:
+Edita el array `experience` en `portfolio.ts`:
 
 ```typescript
 experience: [
@@ -178,38 +174,28 @@ experience: [
 
 ### 5. Configurar proyectos
 
-Edita `src/infrastructure/data/projects.json` con tus proyectos:
+Edita el array `projects` en `portfolio.ts`:
 
-```json
-[
-  {
-    "title": "nombre-proyecto",
-    "description": "Descripción del proyecto",
-    "stack": ["React", "Node.js", "MongoDB"],
-    "github": "https://github.com/usuario/repo",
-    "demo": "https://demo-url.com",
-    "lastUpdate": "2025-02-01",
-    "stars": 10,
-    "featured": true
-  }
-]
+```typescript
+{
+  title: 'nombre-proyecto',
+  description: 'Descripción del proyecto',
+  stack: ['React', 'Node.js', 'MongoDB'],
+  github: 'https://github.com/usuario/repo',
+  demo: 'https://demo-url.com',
+  lastUpdate: '2025-02-01',
+  stars: 10,
+  featured: true,
+}
 ```
 
-### 6. Configurar traducciones
+### 6. Traducciones de la UI
 
-Edita `src/shared/i18n/es.ts` y `src/shared/i18n/en.ts` para personalizar los textos.
+Los textos de la interfaz (nav, hero, contact, etc.) están en el mismo archivo `portfolio.ts`, dentro del objeto `translations` con claves `es` y `en`.
 
-### 7. Actualizar URL del sitio
+### 7. Agregar tu CV
 
-En `astro.config.mjs`, cambia la URL del sitio:
-
-```javascript
-site: 'https://tu-dominio.com'
-```
-
-### 8. Agregar tu CV
-
-Coloca tu archivo PDF en `public/CV.pdf` o actualiza `PUBLIC_CV_URL` en `.env`.
+Coloca tu archivo PDF en `public/CV.pdf` y asegúrate de que `cvUrl` en `personal` apunte a `/CV.pdf`.
 
 ## 🚀 Desarrollo
 
@@ -285,7 +271,7 @@ git push -u origin main
 
 3. **Configura las variables de entorno**
    - En la configuración del proyecto, ve a "Environment Variables"
-   - Agrega todas las variables de `.env.example`
+   - Agrega `PUBLIC_SITE_URL` con la URL de tu sitio (ej: `https://tu-proyecto.vercel.app`)
 
 4. **Despliega**
    - Vercel desplegará automáticamente en cada push a `main`
@@ -331,7 +317,7 @@ Sigue las instrucciones en la terminal.
 
 4. **Configura variables de entorno**
    - Ve a "Site settings" > "Environment variables"
-   - Agrega todas las variables de `.env.example`
+   - Agrega `PUBLIC_SITE_URL` con la URL de tu sitio
 
 #### Opción 2: Desde CLI
 
@@ -396,13 +382,13 @@ portfolio/
 │
 ├── src/
 │   ├── domain/                  # Capa de Dominio
-│   │   ├── entities/           # Entidades de negocio
+│   │   ├── entities/
 │   │   │   ├── Project.ts
 │   │   │   └── PersonalInfo.ts
-│   │   ├── types/               # Tipos de dominio
+│   │   ├── types/
 │   │   │   ├── Language.ts
 │   │   │   └── Filter.ts
-│   │   └── interfaces/          # Contratos
+│   │   └── interfaces/
 │   │       ├── ProjectRepository.ts
 │   │       ├── ConfigRepository.ts
 │   │       └── TranslationService.ts
@@ -412,22 +398,18 @@ portfolio/
 │   │       ├── ProjectService.ts
 │   │       └── ConfigService.ts
 │   │
-│   ├── infrastructure/           # Capa de Infraestructura
+│   ├── infrastructure/          # Capa de Infraestructura
 │   │   ├── repositories/
 │   │   │   ├── ProjectRepository.ts
 │   │   │   └── ConfigRepository.ts
-│   │   ├── services/
-│   │   │   └── TranslationService.ts
-│   │   └── data/
-│   │       ├── projects.json
-│   │       └── config.ts
+│   │   └── services/
+│   │       └── TranslationService.ts
 │   │
 │   ├── presentation/            # Capa de Presentación
 │   │   ├── components/
 │   │   │   ├── Header.astro
 │   │   │   ├── Footer.astro
 │   │   │   ├── ProjectCard.astro
-│   │   │   ├── ProjectCard.tsx
 │   │   │   └── ContactForm.tsx
 │   │   ├── sections/
 │   │   │   ├── Hero.astro
@@ -439,15 +421,19 @@ portfolio/
 │   │   └── layouts/
 │   │       └── BaseLayout.astro
 │   │
-│   ├── shared/                   # Capa Compartida
+│   ├── shared/                  # Capa Compartida
 │   │   ├── constants/
 │   │   │   └── index.ts
+│   │   ├── data/
+│   │   │   └── portfolio.ts     # Fuente única: config, proyectos, traducciones
 │   │   ├── di/
 │   │   │   └── container.ts
+│   │   ├── hooks/
+│   │   │   └── useLanguage.ts   # Hook para idioma en componentes React
 │   │   ├── i18n/
-│   │   │   ├── es.ts
-│   │   │   ├── en.ts
-│   │   │   └── index.ts
+│   │   │   └── index.ts         # getTranslations(lang)
+│   │   ├── stores/
+│   │   │   └── language.ts      # Store de idioma (cambio sin recarga)
 │   │   ├── styles/
 │   │   │   └── global.css
 │   │   └── utils/
@@ -455,14 +441,14 @@ portfolio/
 │   │       ├── string.ts
 │   │       └── url.ts
 │   │
-│   └── pages/                    # Páginas de Astro
+│   └── pages/
 │       └── index.astro
 │
-├── .env.example                  # Ejemplo de variables de entorno
+├── .env                         # Variables de entorno (crear manualmente)
 ├── .gitignore
-├── astro.config.mjs              # Configuración de Astro
-├── tailwind.config.mjs           # Configuración de Tailwind
-├── tsconfig.json                 # Configuración de TypeScript
+├── astro.config.mjs             # Configuración de Astro + Vercel adapter
+├── tailwind.config.mjs          # Configuración de Tailwind
+├── tsconfig.json                # Configuración de TypeScript
 └── package.json
 ```
 
@@ -549,7 +535,7 @@ Verifica que `localStorage` esté habilitado en tu navegador.
 
 ### Error al cambiar de idioma
 
-El proyecto usa `output: 'hybrid'` en Astro para permitir el procesamiento de query parameters. Asegúrate de que `export const prerender = false;` esté en `src/pages/index.astro`.
+El proyecto usa un store de idioma (`shared/stores/language.ts`) que actualiza el contenido sin recargar la página. El idioma se persiste en `localStorage` y se sincroniza con el parámetro `?lang=es` o `?lang=en` en la URL.
 
 ## 🛠️ Tecnologías
 

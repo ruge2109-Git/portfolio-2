@@ -1,23 +1,13 @@
-/**
- * Infrastructure: TranslationService Implementation
- * Concrete implementation of translation service
- */
 import type {
   ITranslationService,
   Translations,
 } from '../../domain/interfaces/TranslationService';
 import type { Language } from '../../domain/types/Language';
-import { es } from '../../shared/i18n/es';
-import { en } from '../../shared/i18n/en';
-
-const translations: Record<Language, Translations> = {
-  es,
-  en,
-};
+import { portfolioData } from '@shared/data/portfolio';
 
 export class TranslationService implements ITranslationService {
   getTranslations(lang: Language): Translations {
-    return translations[lang] || translations.es;
+    return portfolioData.translations[lang] || portfolioData.translations.es;
   }
 
   getTranslation(lang: Language, key: string): string | undefined {
