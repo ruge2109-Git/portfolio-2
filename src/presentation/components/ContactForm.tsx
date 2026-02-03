@@ -25,22 +25,36 @@ export default function ContactForm({ lang = 'es', email }: Props) {
     e.preventDefault();
     setStatus('sending');
 
-    const subject = encodeURIComponent(
-      `${CONTACT_EMAIL_SUBJECT_PREFIX[currentLang]} - ${formData.name}`
-    );
-    const body = encodeURIComponent(
-      `Nombre: ${formData.name}\nEmail: ${formData.email}\n\nMensaje:\n${formData.message}`
-    );
-    const mailtoLink = `mailto:${email}?subject=${subject}&body=${body}`;
-    
-    window.location.href = mailtoLink;
-    
-    setFormData({ name: '', email: '', message: '' });
-    setStatus('success');
-    
-    setTimeout(() => {
-      setStatus('idle');
-    }, 3000);
+    const accessKey = import.meta.env.PUBLIC_WEB3FORMS_ACCESS_KEY;
+    if (!accessKey) {
+      setStatus('error');
+      setTimeout(() => setStatus('idle'), 3000);
+      return;
+    }
+
+    try {
+      const res = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          access_key: accessKey,
+          name: formData.name,
+          email: formData.email,
+          message: formData.message,
+          subject: `${CONTACT_EMAIL_SUBJECT_PREFIX[currentLang]} - ${formData.name}`,
+        }),
+      });
+      const data = await res.json();
+      if (data.success) {
+        setFormData({ name: '', email: '', message: '' });
+        setStatus('success');
+      } else {
+        setStatus('error');
+      }
+    } catch {
+      setStatus('error');
+    }
+    setTimeout(() => setStatus('idle'), 3000);
   };
 
   const handleChange = (

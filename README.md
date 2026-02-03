@@ -217,11 +217,11 @@ Por defecto, el formulario de contacto usa `mailto:`, que abre el cliente de cor
 3. La ruta recibe el POST del formulario y llama a Resend para enviar el correo
 4. Necesitas una API key de Resend (cuenta en [resend.com](https://resend.com)) y la variable `RESEND_API_KEY` en Vercel
 
-### Opción 3: Web3Forms
+### Opción 3: Web3Forms (implementado)
 
-1. Regístrate en [web3forms.com](https://web3forms.com)
-2. Obtén tu Access Key
-3. Envía un POST a `https://api.web3forms.com/submit` con `access_key` y los datos del formulario
+1. Regístrate en [web3forms.com](https://web3forms.com) y obtén tu Access Key
+2. Añade en `.env`: `PUBLIC_WEB3FORMS_ACCESS_KEY=tu-access-key`
+3. En Vercel/Netlify: configura la variable de entorno `PUBLIC_WEB3FORMS_ACCESS_KEY`
 
 ## 🚀 Desarrollo
 
