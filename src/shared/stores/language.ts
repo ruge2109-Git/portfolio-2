@@ -37,7 +37,7 @@ function updateUrlParam(lang: Language) {
   if (typeof window === 'undefined') return;
   const url = new URL(window.location.href);
   url.searchParams.set('lang', lang);
-  window.history.replaceState({}, '', url.toString());
+  return url.toString();
 }
 
 function emit(lang: Language) {
@@ -52,13 +52,19 @@ function applyLanguage(
   options?: {
     updateUrl?: boolean;
     emit?: boolean;
+    reload?: boolean;
   }
 ) {
   currentLanguage = lang;
   updateHtmlLang(lang);
   updateStorage(lang);
-  if (options?.updateUrl !== false) {
-    updateUrlParam(lang);
+  if (options?.updateUrl !== false && typeof window !== 'undefined') {
+    const newUrl = updateUrlParam(lang);
+    if (options?.reload && newUrl) {
+      window.location.replace(newUrl);
+      return;
+    }
+    window.history.replaceState({}, '', newUrl);
   }
   if (options?.emit !== false) {
     emit(lang);
@@ -77,9 +83,9 @@ export function initLanguage(initialLang: Language) {
   return resolved;
 }
 
-export function setLanguage(lang: Language, options?: { updateUrl?: boolean }) {
+export function setLanguage(lang: Language, options?: { updateUrl?: boolean; reload?: boolean }) {
   if (!isValidLanguage(lang) || lang === currentLanguage) return;
-  applyLanguage(lang, { updateUrl: options?.updateUrl, emit: true });
+  applyLanguage(lang, { updateUrl: options?.updateUrl, emit: true, reload: options?.reload ?? true });
 }
 
 export function subscribeLanguage(listener: Listener) {

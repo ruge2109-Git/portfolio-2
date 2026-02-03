@@ -32,7 +32,7 @@ const description = lang === 'es'
   <Contact lang={lang} />
 </BaseLayout>
 
-<script type="module" is:inline>
+<script define:vars={{ lang }}>
   import { initLanguage } from '@shared/stores/language';
-  initLanguage({JSON.stringify(lang)});
+  initLanguage(lang);
 </script>

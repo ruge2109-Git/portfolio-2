@@ -229,7 +229,7 @@ const config = await configService.getConfig();
         langToggle.setAttribute('aria-expanded', 'false');
 
         import('@shared/stores/language').then(({ setLanguage }) =>
-          setLanguage(selectedLang as Language)
+          setLanguage(selectedLang as Language, { reload: true })
         );
         return false;
       }

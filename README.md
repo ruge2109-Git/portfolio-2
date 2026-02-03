@@ -197,6 +197,32 @@ Los textos de la interfaz (nav, hero, contact, etc.) están en el mismo archivo 
 
 Coloca tu archivo PDF en `public/CV.pdf` y asegúrate de que `cvUrl` en `personal` apunte a `/CV.pdf`.
 
+## 📧 Envío de correo
+
+Por defecto, el formulario de contacto usa `mailto:`, que abre el cliente de correo del usuario. Para recibir mensajes directamente en tu bandeja sin depender de un cliente de correo, tienes estas opciones:
+
+### Opción 1: Formspree (sin backend)
+
+1. Crea una cuenta en [formspree.io](https://formspree.io)
+2. Crea un formulario y obtén tu endpoint (ej: `https://formspree.io/f/xxxxx`)
+3. Cambia el `ContactForm.tsx`: en lugar de `mailto:`, envía un `POST` a tu URL de Formspree con `fetch`:
+   - `method: 'POST'`
+   - `headers: { 'Content-Type': 'application/json' }`
+   - `body: JSON.stringify({ name, email, message })`
+
+### Opción 2: Resend + Vercel Serverless Function
+
+1. Instala Resend: `npm install resend`
+2. Crea una API route en `src/pages/api/contact.ts` (o usa Astro endpoints)
+3. La ruta recibe el POST del formulario y llama a Resend para enviar el correo
+4. Necesitas una API key de Resend (cuenta en [resend.com](https://resend.com)) y la variable `RESEND_API_KEY` en Vercel
+
+### Opción 3: Web3Forms
+
+1. Regístrate en [web3forms.com](https://web3forms.com)
+2. Obtén tu Access Key
+3. Envía un POST a `https://api.web3forms.com/submit` con `access_key` y los datos del formulario
+
 ## 🚀 Desarrollo
 
 Inicia el servidor de desarrollo:
@@ -535,7 +561,7 @@ Verifica que `localStorage` esté habilitado en tu navegador.
 
 ### Error al cambiar de idioma
 
-El proyecto usa un store de idioma (`shared/stores/language.ts`) que actualiza el contenido sin recargar la página. El idioma se persiste en `localStorage` y se sincroniza con el parámetro `?lang=es` o `?lang=en` en la URL.
+Al cambiar el idioma en el header, la página se recarga con `?lang=es` o `?lang=en` para que todas las secciones (Hero, About, Proyectos, etc.) se rendericen en el idioma correcto desde el servidor. El idioma se persiste en `localStorage`.
 
 ## 🛠️ Tecnologías
 
